@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3666247423208CD6007A74AF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3666247323208CD6007A74AF /* main.cpp */; };
+		366AAF6223215D3200699D89 /* libncurses.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 366AAF5F23215D3100699D89 /* libncurses.tbd */; };
+		366AAF6323215D3200699D89 /* libncurses.5.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 366AAF6023215D3100699D89 /* libncurses.5.tbd */; };
+		366AAF6423215D3200699D89 /* libncurses.5.4.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 366AAF6123215D3200699D89 /* libncurses.5.4.tbd */; };
+		36A4843023208EFC00A248F4 /* TextEdit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36A4842E23208EFC00A248F4 /* TextEdit.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +27,14 @@
 
 /* Begin PBXFileReference section */
 		3666247023208CD6007A74AF /* Text Editor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Text Editor"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3666247323208CD6007A74AF /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		366AAF5F23215D3100699D89 /* libncurses.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libncurses.tbd; path = usr/lib/libncurses.tbd; sourceTree = SDKROOT; };
+		366AAF6023215D3100699D89 /* libncurses.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libncurses.5.tbd; path = usr/lib/libncurses.5.tbd; sourceTree = SDKROOT; };
+		366AAF6123215D3200699D89 /* libncurses.5.4.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libncurses.5.4.tbd; path = usr/lib/libncurses.5.4.tbd; sourceTree = SDKROOT; };
+		36A4842D23208EFC00A248F4 /* curses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curses.h; sourceTree = "<group>"; };
+		36A4842E23208EFC00A248F4 /* TextEdit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextEdit.cpp; sourceTree = "<group>"; };
+		36A4842F23208EFC00A248F4 /* panel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = panel.h; sourceTree = "<group>"; };
+		36A48431232158C900A248F4 /* a.out */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = a.out; sourceTree = "<group>"; };
+		36A48433232158CA00A248F4 /* pdcurses.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = pdcurses.dll; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +42,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				366AAF6223215D3200699D89 /* libncurses.tbd in Frameworks */,
+				366AAF6323215D3200699D89 /* libncurses.5.tbd in Frameworks */,
+				366AAF6423215D3200699D89 /* libncurses.5.4.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +56,7 @@
 			children = (
 				3666247223208CD6007A74AF /* Text Editor */,
 				3666247123208CD6007A74AF /* Products */,
+				366AAF5E23215D3100699D89 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,9 +71,23 @@
 		3666247223208CD6007A74AF /* Text Editor */ = {
 			isa = PBXGroup;
 			children = (
-				3666247323208CD6007A74AF /* main.cpp */,
+				36A48431232158C900A248F4 /* a.out */,
+				36A48433232158CA00A248F4 /* pdcurses.dll */,
+				36A4842D23208EFC00A248F4 /* curses.h */,
+				36A4842F23208EFC00A248F4 /* panel.h */,
+				36A4842E23208EFC00A248F4 /* TextEdit.cpp */,
 			);
 			path = "Text Editor";
+			sourceTree = "<group>";
+		};
+		366AAF5E23215D3100699D89 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				366AAF6123215D3200699D89 /* libncurses.5.4.tbd */,
+				366AAF6023215D3100699D89 /* libncurses.5.tbd */,
+				366AAF5F23215D3100699D89 /* libncurses.tbd */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -118,7 +146,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3666247423208CD6007A74AF /* main.cpp in Sources */,
+				36A4843023208EFC00A248F4 /* TextEdit.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,6 +268,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Text\\ Editor",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -248,6 +280,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Text\\ Editor",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
