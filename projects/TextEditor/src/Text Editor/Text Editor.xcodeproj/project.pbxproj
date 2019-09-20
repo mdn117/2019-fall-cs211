@@ -35,6 +35,8 @@
 		36A4842F23208EFC00A248F4 /* panel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = panel.h; sourceTree = "<group>"; };
 		36A48431232158C900A248F4 /* a.out */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = a.out; sourceTree = "<group>"; };
 		36A48433232158CA00A248F4 /* pdcurses.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = pdcurses.dll; sourceTree = "<group>"; };
+		36BAC623232AC28800240303 /* Vector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vector.hpp; sourceTree = "<group>"; };
+		36BAC625232C464800240303 /* test.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,8 @@
 		3666247223208CD6007A74AF /* Text Editor */ = {
 			isa = PBXGroup;
 			children = (
+				36BAC625232C464800240303 /* test.txt */,
+				36BAC623232AC28800240303 /* Vector.hpp */,
 				36A48431232158C900A248F4 /* a.out */,
 				36A48433232158CA00A248F4 /* pdcurses.dll */,
 				36A4842D23208EFC00A248F4 /* curses.h */,

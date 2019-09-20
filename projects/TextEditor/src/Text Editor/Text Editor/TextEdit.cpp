@@ -2,16 +2,19 @@
 #define menu_color 1
 #define input_window_color 2
 #define info_window_color 3
+#define ctrl(x)           ((x) & 037) // this defines how I will implement control + another character
 
 #include <curses.h>
 //#include <curspriv.h>
 #include <panel.h>
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <vector>
 
 using namespace std;
 
-int main(void)
+int main(int argc, char* argv[])
 {
     //initialize our screen
     initscr();
@@ -25,6 +28,8 @@ int main(void)
     //input_x and input_y are used to determine cursor placement
     int input_y = 1;
     int input_x = 1;
+    int info_y = 1;
+    int info_x = 48;
     
     //each of the following functions create windows, the integers are, from left to right,
     //number of rows, number of columns, starting y position, starting x position
@@ -69,6 +74,7 @@ int main(void)
 
     //turn on keypad input
     keypad(input_window, TRUE);
+    keypad(info_window, TRUE);
 
     //show the cursor
     curs_set(TRUE);
@@ -96,6 +102,13 @@ int main(void)
     //outputs the phrase Q to QUIT to the info window
     mvwprintw(info_window, 1, 6, "Q to QUIT");
     
+    //Initializes matrix (2D vector)
+    vector < vector <string> > words;
+    vector <string> word;
+    int num_of_col = getmaxx(input_window);
+    int num_of_row = 3;
+    
+    
     
     //refresh tells curses to draw everything, also have to refresh each individual
     //window in order to have the colors, text, and boxes show up in each window.
@@ -107,67 +120,168 @@ int main(void)
     wrefresh(options_window);
     wrefresh(help_window);
     wrefresh(info_window);
+    wrefresh(input_window);
 
     //END OF PROGRAM LOGIC GOES HERE
     //Pause for user input
-    int input;
-    int max_input_x = getmaxx(input_window);
+    int input = getch();
     
-    while((input = wgetch(input_window)) != 'Q') //input helps with the switch statements to pause for user input, capital q is used
+    fstream file;
+    string s;
+    string filename;
+    bool cursor_input_win = true;
+    bool continue_program = true;
+    
+    while(continue_program) //input helps with the switch statements to pause for user input, capital q is used
                                                  //as a sentinel in order to break out of the while loop
     {
-        switch (input)
+       if (input == 'O')
+       {
+           mvwprintw(info_window, 1, 17, "What file do you want to open?");
+           wmove(info_window, info_y, info_x);
+           input = wgetch(info_window);
+           cursor_input_win = false;
+       }
+        else
         {
-                //each key case will change the x or y value of the cursor, then use the move function to move the cursoor inside the window
-            case (KEY_LEFT):
-                input_x--;
-                wmove(input_window, input_y, input_x);
-                break;
-            case (KEY_RIGHT):
-                input_x++;
-                wmove(input_window, input_y, input_x);
-                break;
-            case (KEY_UP):
-                input_y--;
-                wmove(input_window, input_y, input_x);
-                break;
-            case (KEY_DOWN):
-                input_y++;
-                wmove(input_window, input_y, input_x);
-                break;
-            case (10): //10 is the numeric value for enter in ncurses
-                input_x = 1;
-                input_y++;
-                wmove(input_window, input_y, input_x);
-                break;
-            case (127): //127 is the numeric value for backspace in ncurses
-                if (input_x == 1)
-                {
-                    input_y--;
-                    input_x = max_input_x - 2;
-                }
-                else
-                {
-                    input_x--;
-                }
-                wmove(input_window, input_y, input_x);
-                wdelch(input_window);
-                break;
-                //default case is pressing a key that has no special function other than outputting that character to the screen
-            default:
-                if (input_x == max_input_x - 2)
-                {
-                    input_x = 1;
-                    input_y++;
-                }
-                else
-                {
-                    input_x++;
-                }
-                waddch(input_window, input); //since cbreak is on, addch is not called automatically from getch, so we have to do it each time
-                wmove(input_window, input_y, input_x);
-                break;
+            wmove(input_window, input_y, input_x);
+            input = wgetch(input_window);
         }
+            switch (input)
+            {
+                    //each key case will change the x or y value of the cursor, then use the move function to move the cursor inside the window
+                case (KEY_LEFT):
+                    if (cursor_input_win == false)
+                    {
+                        info_x--;
+                        wmove(info_window, info_y, info_x);
+                        break;
+                    }
+                    else
+                    {
+                        input_x--;
+                        wmove(input_window, input_y, input_x);
+                        break;
+                    }
+                case (KEY_RIGHT):
+                    input_x++;
+                    wmove(input_window, input_y, input_x);
+                    break;
+                case (KEY_UP):
+                    input_y--;
+                    wmove(input_window, input_y, input_x);
+                    break;
+                case (KEY_DOWN):
+                    input_y++;
+                    wmove(input_window, input_y, input_x);
+                    break;
+                case (10): //10 is the numeric value for enter in ncurses
+                    if (cursor_input_win == false)
+                    {
+                        input_x = 1;
+                        input_y = 1;
+                        wmove(input_window, input_y, input_x);
+                        file.open(filename);
+                        wclear(input_window);
+                        while (file.good() == true)
+                        {
+                            if (input_x > (num_of_col - s.length()))
+                            {
+                                input_x = 1;
+                                input_y++;
+                                num_of_row++;
+                                words.resize(num_of_row, vector<string>(num_of_col));
+                            }
+                            else
+                            {
+                                input_x += s.length();
+                            }
+                            getline(file, s);
+                            word.push_back(s);
+                            words.push_back(word);
+                        }
+                        // display 2d vector contents
+                        for (int i = 0; i < words.size(); i++)
+                        {
+                            for (int j = 0; j < words[i].size(); j++)
+                            {
+                                waddstr(input_window, words[i][j].c_str());
+                            }
+                        }
+                        file.close();
+                        wmove(input_window, input_y, input_x);
+                        wclear(info_window);
+                        box(info_window, 0, 0);
+                        mvwprintw(info_window, 1, 6, "Q to QUIT");
+                        cursor_input_win = true;
+                        break;
+                    }
+                    else
+                    {
+                        input_x = 1;
+                        input_y++;
+                        wmove(input_window, input_y, input_x);
+                        break;
+                    }
+                case (127): //127 is the numeric value for backspace in ncurses
+                    if (cursor_input_win == false)
+                    {
+                        info_x--;
+                        wmove(info_window, info_y, info_x);
+                        filename.pop_back();
+                        wdelch(info_window);
+                        break;
+                    }
+                    else
+                    {
+                        if (input_x == 1)
+                        {
+                            input_y--;
+                            input_x = num_of_col - 2;
+                        }
+                        else
+                        {
+                            input_x--;
+                        }
+                        wmove(input_window, input_y, input_x);
+                        wdelch(input_window);
+                        break;
+                    }
+                case ('Q'):
+                    continue_program = false;
+                    break;
+                    //default case is pressing a key that has no special function other than outputting that character to the screen
+                default:
+                    if (cursor_input_win == false)
+                    {
+                        if (input == 'O')
+                        {
+                            break;
+                        }
+                        filename.push_back(input);
+                        waddch(info_window, input);
+                        info_x++;
+                        wmove(info_window, info_y, info_x);
+                        break;
+                    }
+                    else
+                    {
+                        if (input_x == num_of_col - 2)
+                        {
+                            input_x = 1;
+                            input_y++;
+                        }
+                        else
+                        {
+                            input_x++;
+                        }
+                        waddch(input_window, input); //since cbreak is on, addch is not called automatically from getch, so we have to do it each time
+                        wmove(input_window, input_y, input_x);
+                        break;
+                    }
+            }
+
+        wrefresh(info_window);
         wrefresh(input_window);
     }
     
